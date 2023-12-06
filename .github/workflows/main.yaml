@@ -8,9 +8,6 @@ on:
     branches: 
       - '*'
 
-env:
-  home: '/home/runner/.config'
-
 jobs:
   heap_memory_usage:
     name: Heap memory usage
