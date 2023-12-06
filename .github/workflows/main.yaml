@@ -39,10 +39,13 @@ jobs:
             adb shell am start -n com.example.githubactionssampleproject4/com.example.githubactionssampleproject4.MainActivity  #com.example.cicddemo/.MainActivity
             adb -s emulator-5554 logcat &
             # adb shell run-as com.example.cicddemo du -sh /data/data/com.example.cicddemo/cache
-            sleep 2
-            memory_info="$(adb shell dumpsys meminfo com.example.githubactionssampleproject4)"
-            printf "%15s %15s %15s %15s\n" "" "Heap Size" "Heap Alloc" "Heap Free"
-            printf "%15s %15s %15s %15s\n" "" "---------" "----------" "---------"
-            echo "$memory_info" | grep "Native Heap" | head -1 | awk '{printf "%15s %15d %15d %15d\n", "Native Heap", $8, $9, $10}'
-            echo "$memory_info" | grep "Dalvik Heap" | head -1 | awk '{printf "%15s %15d %15d %15d\n", "Dalvik Heap", $8, $9, $10}'
-            echo "$memory_info" | grep "TOTAL" | head -1 | awk '{printf "%15s %15d %15d %15d\n", "TOTAL", $7, $8, $9}'
+
+      - name: Heap memory usage
+        run: |
+          sleep 2
+          memory_info="$(adb shell dumpsys meminfo com.example.githubactionssampleproject4)"
+          printf "%15s %15s %15s %15s\n" "" "Heap Size" "Heap Alloc" "Heap Free"
+          printf "%15s %15s %15s %15s\n" "" "---------" "----------" "---------"
+          echo "$memory_info" | grep "Native Heap" | head -1 | awk '{printf "%15s %15d %15d %15d\n", "Native Heap", $8, $9, $10}'
+          echo "$memory_info" | grep "Dalvik Heap" | head -1 | awk '{printf "%15s %15d %15d %15d\n", "Dalvik Heap", $8, $9, $10}'
+          echo "$memory_info" | grep "TOTAL" | head -1 | awk '{printf "%15s %15d %15d %15d\n", "TOTAL", $7, $8, $9}'
