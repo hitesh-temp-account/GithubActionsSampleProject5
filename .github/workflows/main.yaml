@@ -23,15 +23,17 @@ jobs:
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
+        api-level: 30
+        target: google_apis
+        arch: x86_64
         script: |
-          chmod +x gradlew
-          ./gradlew installDebug
-
-    - name: Launch app
-      run: |
-        sleep 2
-        adb shell am start -n com.example.githubactionssampleproject4/com.example.githubactionssampleproject4.MainActivity
+            adb kill-server
+            adb start-server
+            ./gradlew installDebug
+            # adb shell cmd package list packages
+            sleep 3
+            acom.example.githubactionssampleproject4/com.example.githubactionssampleproject4.MainActivity
+            adb -s emulator-5554 logcat &
 
     - name: Print heap memory usage
       run: |
