@@ -29,6 +29,7 @@ jobs:
         script: |
             adb kill-server
             adb start-server
+            chmod +x gradlew
             ./gradlew installDebug
             # adb shell cmd package list packages
             sleep 3
