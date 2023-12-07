@@ -41,3 +41,4 @@ jobs:
             # adb shell run-as com.example.cicddemo du -sh /data/data/com.example.cicddemo/cache
             chmod +x ./scripts/heap_memory_usage.sh
             bash ./scripts/heap_memory_usage.sh
+            adb shell du -sh /data/data/com.example.githubactionssampleproject4
