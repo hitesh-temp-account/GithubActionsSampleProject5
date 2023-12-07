@@ -1,0 +1,44 @@
+name: Performance Profiling
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  heap_memory_usage:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'adopt'
+          cache: 'gradle'
+
+      - name: CHMOD
+        run: |
+          chmod +x ./gradlew
+        
+      - name: Run emulator, install & launch app
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          script: |
+            adb kill-server
+            adb start-server
+            ./gradlew installDebug
+            # adb shell cmd package list packages
+            sleep 3
+            adb shell am start -n com.example.githubactionssampleproject4/com.example.githubactionssampleproject4.MainActivity  #com.example.cicddemo/.MainActivity
+            adb -s emulator-5554 logcat &
+            # adb shell run-as com.example.cicddemo du -sh /data/data/com.example.cicddemo/cache
+            chmod +x ./scripts/heap_memory_usage.sh
+            bash ./scripts/heap_memory_usage.sh
+            adb shell du -sh /data/data/com.example.githubactionssampleproject4
